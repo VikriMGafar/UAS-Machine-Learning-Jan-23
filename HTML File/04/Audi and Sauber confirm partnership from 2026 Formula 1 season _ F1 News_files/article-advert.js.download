@@ -1,0 +1,44 @@
+define("article-advert", [ "widget-lite" ], function(t) {
+    return t.extend({
+        adverts: [ {
+            paragraphCount: 4,
+            minParagraphs: 4,
+            adClass: "block advert--mpu -bp10-hdn -bp20-hdn is-hidden--bp10 is-hidden--bp20 advert--mpu-standard-height",
+            adId: "in-article-video"
+        }, {
+            paragraphCount: 5,
+            minParagraphs: 7,
+            adClass: "",
+            adId: "in-article-desktop",
+            validation: function(t) {
+                return !(0 < t.querySelectorAll('[data-fn="create-video"]').length);
+            }
+        } ],
+        init: function(t) {
+            this.rootElement = t;
+            for (var e = this.adverts.length - 1; 0 <= e; e--) this.injectAdvert(this.adverts[e]);
+        },
+        getValidBodyContainer: function(t) {
+            var e = this.rootElement;
+            if (e.parentNode.querySelectorAll('[data-fn="article-advert"] > p').length >= t.minParagraphs) return t.validation && !t.validation(e) ? null : e;
+            var a = e.parentNode.querySelectorAll('[data-fn="article-advert"] > div');
+            if (0 === a.length) return null;
+            var n = a[a.length - 1];
+            return n.getElementsByTagName("p").length >= t.minParagraphs ? t.validation && !t.validation(n) ? null : n : null;
+        },
+        injectAdvert: function(t) {
+            var e = this.getValidBodyContainer(t);
+            if (null !== e) {
+                for (var a = e, n = 0, r = null, i = 0, d = a.children.length; i < d; i++) if ("P" === a.children[i].tagName) {
+                    if (n === t.paragraphCount) {
+                        r = a.children[i];
+                        break;
+                    }
+                    n++;
+                }
+                var l = document.createElement("div");
+                l.setAttribute("class", t.adClass), l.setAttribute("id", t.adId), null !== r && r.parentNode.insertBefore(l, r);
+            }
+        }
+    });
+});

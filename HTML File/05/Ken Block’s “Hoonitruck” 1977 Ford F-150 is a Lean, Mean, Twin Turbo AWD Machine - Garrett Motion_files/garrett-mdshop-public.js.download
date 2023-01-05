@@ -1,0 +1,159 @@
+(function( $ ) {
+	'use strict';
+
+	if ($('#rental-calendar').length) {
+		$('form.cart .button').prop('disabled', true);
+		$('#rental-calendar').prop('disabled', true);
+		$('form.cart').addClass('loading');
+	}
+
+	$('#rental-calendar').each(function(){
+		var postData = {
+			action: 'mdshop_bookings_load'
+		};
+
+		var datesToBeDisabled = '';
+
+		$.ajax({
+			url: ajax_obj.ajax_url,
+			type: 'post',
+			dataType: 'json',
+			data: postData,
+			success: function(data) {
+				datesToBeDisabled = data;
+				$('form.cart .button').prop('disabled', false);
+				$('#rental-calendar').prop('disabled', false);
+				$('form.cart').removeClass('loading');
+			}
+		});
+
+		//var datesToBeDisabled = $(this).attr('data-disabledDates');
+		if (datesToBeDisabled) {
+			datesToBeDisabled = datesToBeDisabled.split(',');
+		}
+
+		//console.log(datesToBeDisabled);
+		$(this).daterangepicker({
+			autoUpdateInput: false,
+			separator: ' – ',
+			locale: {
+				format: 'DD.MM.YYYY'
+			},
+			minDate: moment(),
+			autoApply: true,
+			showCustomRangeLabel: false,
+			alwaysShowCalendars: true,
+			parentEl: ".rental-product-booking",
+			isInvalidDate: function(date) {
+				if (datesToBeDisabled) {
+					var d = date.format('DD.MM.YYYY');
+					for(var i=0;i<datesToBeDisabled.length;i++){
+						//console.log(datesToBeDisabled[i]);
+						if(datesToBeDisabled[i] == d){
+							return true;
+							break;
+						}
+					}
+				}
+				return false;
+			},
+			isCustomDate: function(date) {
+				if (datesToBeDisabled) {
+					var d = date.format('DD.MM.YYYY');
+					for(var i=0;i<datesToBeDisabled.length;i++){
+						//console.log(datesToBeDisabled[i]);
+						if(datesToBeDisabled[i] == d){
+							return 'booked';
+							break;
+						}
+					}
+				}
+			}
+		}, function(start, end, label) {
+			//console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			$('#rental-calendar').val(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+			$('input[name="rental_start"]').val(start.format('DD.MM.YYYY'));
+			$('input[name="rental_end"]').val(end.format('DD.MM.YYYY'));
+		});
+	});
+
+	// $('#rental-calendar').fullCalendar({
+ //        defaultView: 'month',
+ //        editable: false,
+ //        timeFormat: 'HH:mm',
+ //        slotLabelFormat: 'HH:mm',
+ //        firstDay: 1,
+ //        header: {
+ //            left: 'prev',
+ //            center: 'title',
+ //            right: 'next'
+ //        },
+ //        selectable: true,
+ //        select: function (start, end, jsEvent, view) {
+	// 	    $("#rental-calendar").fullCalendar('addEventSource', [{
+	// 	        start: start,
+	// 	        end: end,
+	// 	        rendering: 'background',
+	// 	        block: true,
+	// 	    }, ]);
+	// 	    $("#rental-calendar").fullCalendar("unselect");
+	// 	},
+	// 	selectOverlap: function(event) {
+	// 	    return ! event.block;
+	// 	},
+ //        //buttonText: btnText,
+ //        events: function(start, end, timezone, callback) {
+ //            var postData = {
+ //                action: 'mdshop_bookings_load',
+ //                start: start.unix(),
+ //                end: end.unix()
+ //            };
+
+ //            // if ( 'singleProductId' in WBCVARS ) {
+ //            //     postData.single_product_id = WBCVARS.singleProductId;
+ //            // }
+
+ //            // // filter by specific categories
+ //            // if ( $('#wbc-calendar').attr('data-category') ) {
+ //            //     postData.category_slugs = $('#wbc-calendar').data('category');
+ //            // }
+            
+ //            // // filter by specific product/s
+ //            // if ( $('#wbc-calendar').attr('data-product') ) {
+ //            //     postData.product_ids = $('#wbc-calendar').data('product');
+ //            // }
+
+ //            $.ajax({
+ //                url: ajax_obj,
+ //                type: 'post',
+ //                dataType: 'json',
+ //                data: postData,
+ //                beforeSend: function() {
+ //                    //$.blockUI({message: ''});
+ //                },
+ //                success: function(events) {
+ //                    //$.blockUI({message: ''});
+                    
+ //                    callback(events);
+ //                }
+ //            });
+ //        },
+ //        eventRender: function(event, element) {
+ //            // add full title hint on mouseover
+ //            element.prop('title', event.title);
+
+ //            // trigger for 3rd plugins
+ //            $(document.body).trigger('wbc_event_render', [ event, element ]);
+
+ //            // hides the time when 00:00 ( or all day slot ) because its strange for the user
+ //            if ( $(element).find('.fc-time').length ) {
+ //                var time = $(element).find('.fc-time').html();
+                
+ //                if ( time == '00:00' || time == '<span>00:00</span>' || time == '<span>00:00 - 00:00</span>' ) {
+ //                    $(element).find(".fc-time").remove();
+ //                }
+ //            }
+ //        }
+ //    });
+
+})( jQuery );

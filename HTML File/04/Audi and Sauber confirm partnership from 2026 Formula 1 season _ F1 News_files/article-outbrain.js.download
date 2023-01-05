@@ -1,0 +1,35 @@
+define("article-outbrain", [ "widget-lite" ], function(t) {
+    return t.extend({
+        src: "",
+        outbrain: {
+            targetParagraph: null,
+            minParagraphs: 3,
+            class: "OUTBRAIN",
+            id: "AR_5",
+            dataObTemplate: "365MediaGroup",
+            src: null
+        },
+        init: function(t) {
+            null != document.querySelector(".outbrain-module__block") && (this.rootElement = t, 
+            this.injectOutbrain());
+        },
+        getTargetParagraph: function() {
+            var t = this.rootElement.parentNode.querySelectorAll('[data-fn="article-outbrain"] > p');
+            return t.length < 2 ? null : (this.outbrain.targetParagraph = 2, t);
+        },
+        getOutbrainSrc: function() {
+            return "" !== this.src ? this.src : null != document.querySelector("meta[property='og:url']") ? document.querySelector("meta[property='og:url']").content : null != document.querySelector("link[rel='canonical']") ? document.querySelector("link[rel='canonical']").href : this.outbrain.src;
+        },
+        injectOutbrain: function() {
+            var t = this.getTargetParagraph(), e = null === t ? null : t[this.outbrain.targetParagraph], r = document.createElement("div");
+            r.setAttribute("class", this.outbrain.class), r.setAttribute("data-widget-id", this.outbrain.id), 
+            r.setAttribute("data-ob-template", this.outbrain.dataObTemplate), r.setAttribute("data-src", this.getOutbrainSrc()), 
+            null !== e && e.parentNode.insertBefore(r, e);
+            window.setTimeout(function t() {
+                if (console.log(document.readyState), "interactive" !== document.readyState && "complete" !== document.readyState) return window.setTimeout(t, 1e3);
+                var e = document.createElement("script");
+                e.type = "text/javascript", e.src = "//widgets.outbrain.com/outbrain.js", document.head.appendChild(e);
+            }, 1e3);
+        }
+    });
+});

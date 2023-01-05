@@ -1,0 +1,93 @@
+// var modal_login_form_gr;
+
+// jQuery(document).ready(function($) {
+//        if(ENALBLE_RECAPTCHA){
+//            console.log('gr');
+//         //   console.log(grecaptcha);
+//         //   console.log(grecaptcha.ready);
+//         //   console.log(grecaptcha.render);
+//            grecaptcha.ready(function(){
+//                modal_login_form_gr = grecaptcha.render('modal-login-form-gr', {
+//                    'sitekey' : '6LeNmxcdAAAAAGU5kvC9ccHr2T5o2dxnayGvaagY',
+//                    'theme' : 'light'
+//                });
+//            });
+           
+//            // Perform AJAX login on form submit
+//            $('.modal-body form.login-form').on('submit', function(e){
+//                e.preventDefault();
+//                var $form = $(this);
+//                grecaptcha.ready(function() {
+
+//                    grecaptcha.execute(modal_login_form_gr).then(function(token){
+//                        var form_data = $form.serializeArray();
+//                        $form.find('.status').show().text(ajax_login_object.loadingmessage);
+
+//                        $.ajax({
+//                            type: 'POST',
+//                            url: ajax_login_object.ajaxurl,
+//                            data: form_data,
+//                            success: function(data){
+//                                data = $.parseJSON(data);
+//                                $form.find('.status').text(data.message);
+//                                if (data.loggedin === true){
+//                                    var rurl = $('.login-form input[name="rurl"]').val();
+//                                    var redirect = '';
+//                                    if (rurl != '') {
+//                                        redirect = rurl;
+//                                    } else if (data.redirect_bf != '') {
+//                                        redirect = data.redirect_bf;
+//                                    } else {
+//                                        redirect = ajax_login_object.redirecturl;
+//                                    }
+
+//                                    if (document.location.href == redirect) {
+//                                        document.location.reload();
+//                                    }
+//                                    else {
+//                                        document.location.href = redirect;
+//                                    }
+//                                }
+//                            }
+//                        });
+
+//                    }).catch(console.log)
+//                })
+//            });
+//        }else{
+//            $('.modal-body form.login-form').on('submit', function(e){
+//                e.preventDefault();
+//                var $form = $(this);
+//                var form_data = $form.serializeArray();
+//                $form.find('.status').show().text(ajax_login_object.loadingmessage);
+//                $.ajax({
+//                    type: 'POST',
+//                    url: ajax_login_object.ajaxurl,
+//                    data: form_data,
+//                    success: function(data){
+//                        data = $.parseJSON(data);
+//                        $form.find('.status').text(data.message);
+//                        if (data.loggedin === true){
+//                            var rurl = $('.login-form input[name="rurl"]').val();
+//                            var redirect = '';
+//                            if (rurl != '') {
+//                                redirect = rurl;
+//                            } else if (data.redirect_bf != '') {
+//                                redirect = data.redirect_bf;
+//                            } else {
+//                                redirect = ajax_login_object.redirecturl;
+//                            }
+
+//                            if (document.location.href == redirect) {
+//                                document.location.reload();
+//                            }
+//                            else {
+//                                document.location.href = redirect;
+//                            }
+//                        }
+//                    }
+//                });
+//            });
+
+//        }
+// });

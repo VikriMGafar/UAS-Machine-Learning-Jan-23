@@ -1,0 +1,2 @@
+// For license information, see `https://assets.adobedtm.com/479fbb05b9cf/acc4688a5e55/72ca6cced26c/RC312da581dd6c4cafb22f6064f005e566-source.js`.
+_satellite.__registerScript('https://assets.adobedtm.com/479fbb05b9cf/acc4688a5e55/72ca6cced26c/RC312da581dd6c4cafb22f6064f005e566-source.min.js', "<!-- AB Tasty site tag (abtasty.js) -->\n\n<script type=\"text/javascript\" async id=\"abtasty-js\"></script>\n\n<script> \ndocument.getElementById(\"abtasty-js\").src = \"https://try.abtasty.com/\" + _satellite.getVar('mkg: abtasty pageview id');\n  \n</script>");
